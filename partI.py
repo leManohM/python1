@@ -11,7 +11,7 @@ def creer_groupe():
 
 def verifier_acces(groupe):
     res = False
-    if groupe["age"] > 18 and groupe["budget"] > 50 and groupe["taille"] > 6:
+    if groupe["age"] >= 18 and groupe["budget"] >= 50 and groupe["taille"] <= 6:
         res = True
     return res
 """
@@ -44,3 +44,41 @@ for g in groupes:
 print("Fin du programme")
 print("Nombre de groupes traités :", len(groupes))
 print('les groupes : ', groupes)
+
+# jour 4 avec chatGPT
+# ajout d'une fonctionnalité pour les scores des groupes
+# chaque groupe aura un score basé sur son budget et sa taille et son age moyen
+
+def calculer_score(groupe):
+    score = 0
+    if groupe["budget"] >= 150:
+        score += 50
+    elif groupe["budget"] >= 100:
+        score += 30
+    elif groupe["budget"] >= 50:
+        score += 10
+    
+
+    if groupe["taille"] <= 4:
+        score += 20
+    elif groupe["taille"] <= 6:
+        score += 10
+
+    if groupe["age"] >= 25: 
+        score += 20
+    elif groupe["age"] >= 18:
+        score += 10
+
+    return score
+
+
+for g in groupes:
+    g["score"] = calculer_score(g)
+    print(g["nom"], "→ Score :", g["score"])
+
+
+# tri des groupes par score décroissant
+groupes_tries = sorted(groupes, key=lambda x: x["score"], reverse=True)
+print("Groupes triés par score décroissant :")
+for g in groupes_tries:
+    print(g["nom"], "→ Score :", g["score"])
