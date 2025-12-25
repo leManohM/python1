@@ -22,7 +22,7 @@ else:
     print("Accès refusé")
 """
 # jour 3 avec chatGPT
-
+"""
 groupes = []
 
 while True:
@@ -44,7 +44,7 @@ for g in groupes:
 print("Fin du programme")
 print("Nombre de groupes traités :", len(groupes))
 print('les groupes : ', groupes)
-
+"""
 # jour 4 avec chatGPT
 # ajout d'une fonctionnalité pour les scores des groupes
 # chaque groupe aura un score basé sur son budget et sa taille et son age moyen
@@ -71,7 +71,7 @@ def calculer_score(groupe):
 
     return score
 
-
+"""
 for g in groupes:
     g["score"] = calculer_score(g)
     print(g["nom"], "→ Score :", g["score"])
@@ -82,3 +82,34 @@ groupes_tries = sorted(groupes, key=lambda x: x["score"], reverse=True)
 print("Groupes triés par score décroissant :")
 for g in groupes_tries:
     print(g["nom"], "→ Score :", g["score"])
+"""
+# jour 5 avec chatGPT
+
+#a list of groupes with their scores and dates of creation
+
+groupe_data = [
+    {"nom": "Groupe A", "age": 30, "taille": 4, "budget": 120, "score": 60, "date_creation": "2024-01-15"},
+    {"nom": "Groupe B", "age": 22, "taille": 6, "budget": 80, "score": 30, "date_creation": "2024-02-10"},
+    {"nom": "Groupe C", "age": 28, "taille": 3, "budget": 200, "score": 90, "date_creation": "2024-03-05"},
+    {"nom": "Groupe D", "age": 19, "taille": 5, "budget": 60, "score": 20, "date_creation": "2024-01-25"},
+]
+"""
+#sort by budget descending
+groupes_sorted_by_budget = sorted(groupe_data, key=lambda x: x["budget"], reverse=True)
+print("Groupes triés par budget décroissant :")     
+for g in groupes_sorted_by_budget:
+    print(g["nom"], "→ Budget :", g["budget"])
+    """
+#tache 1 find the highst score groupe 
+
+def trouver_groupe_meilleur_score(groupes):
+    meilleur_groupe = max(groupes, key=lambda x: x["score"])
+    return meilleur_groupe
+def departager_egalite(groupes):
+    max_score = max(g["score"] for g in groupes)
+    groupes_egaux = [g for g in groupes if g["score"] == max_score]
+    if len(groupes_egaux) > 1:
+        groupes_egaux_sorted = sorted(groupes_egaux, key=lambda x: x["budget"])
+        return groupes_egaux_sorted[0]
+    else:
+        return groupes_egaux[0]
