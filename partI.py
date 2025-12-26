@@ -13,6 +13,7 @@ def verifier_acces(groupe):
     res = False
     if groupe["age"] >= 18 and groupe["budget"] >= 50 and groupe["taille"] <= 6:
         res = True
+    print(f" le groupe {groupe['nom']} a accès : {res}")
     return res
 """
 groupe = creer_groupe()
@@ -88,10 +89,10 @@ for g in groupes_tries:
 #a list of groupes with their scores and dates of creation
 
 groupe_data = [
-    {"nom": "Groupe A", "age": 30, "taille": 4, "budget": 120, "score": 60, "date_creation": "2024-01-15"},
-    {"nom": "Groupe B", "age": 22, "taille": 6, "budget": 80, "score": 30, "date_creation": "2024-02-10"},
-    {"nom": "Groupe C", "age": 28, "taille": 3, "budget": 200, "score": 90, "date_creation": "2024-03-05"},
-    {"nom": "Groupe D", "age": 19, "taille": 5, "budget": 60, "score": 20, "date_creation": "2024-01-25"},
+    {"nom": "Groupe A", "age": 30, "taille": 4, "budget": 120, "score": 60},
+    {"nom": "Groupe B", "age": 22, "taille": 6, "budget": 80, "score": 30},
+    {"nom": "Groupe C", "age": 28, "taille": 3, "budget": 200, "score": 90},
+    {"nom": "Groupe D", "age": 19, "taille": 5, "budget": 60, "score": 20},
 ]
 """
 #sort by budget descending
@@ -113,3 +114,42 @@ def departager_egalite(groupes):
         return groupes_egaux_sorted[0]
     else:
         return groupes_egaux[0]
+#gestion des nouveaux groupes qui arrivent
+# priorité = score > budget > ancienneté
+groupe_data = sorted(groupe_data, key=lambda x: x["score"], reverse=True)
+while True :
+    #arriver de nouveaux groupes
+    if input("Ajouter un nouveau groupe ? (o/n) : ") == "o":
+        nouveau_groupe = creer_groupe()
+        if verifier_acces(nouveau_groupe):
+            nouveau_groupe["score"] = calculer_score(nouveau_groupe)
+            groupe_data.append(nouveau_groupe)
+            groupe_data = sorted(groupe_data, key=lambda x: x["score"], reverse=True)
+            meilleur_groupe = departager_egalite(groupe_data)
+            print("Le groupe avec le meilleur score est :", meilleur_groupe["nom"], "avec un score de", meilleur_groupe["score"])
+            print("une table leur est attribuée")
+            groupe_data.remove(meilleur_groupe)
+    else:
+        break
+
+#On par du principe que l'on gere que les groupe qui n'ont pas de table
+#et qui arrivent au fur et a mesure
+
+wainting_for_new_group = [] #Wainting list for new groups
+def nouvelle_arrivee_groupes(wainting_for_new_group):
+    """Gère l'arrivée de nouveaux groupes et leur attribution de table. si ne serait ce q'un groupe a été inscrit ca renvoi a True"""
+    while (input("Ajouter un nouveau groupe ? (o/n) : ") == "o"):
+            nouveau_groupe = creer_groupe(wainting_for_new_group
+            if verifier_acces(nouveau_groupe):
+                nouveau_groupe["score"] = calculer_score(nouveau_groupe)
+                nouveau_groupe["anciennete"] = 0 # initialiser l'ancienneté
+                wainting_for_new_group.append(nouveau_groupe)
+            else:
+                break
+                return True
+    return False
+def departager_groupe(groupes):
+        groupeskey=lambda x: (x["anciennete"],x["score"]), reverse=True)
+
+def check_wainting_list(wainting_for_new_group):
+    """Vérifie la liste d'attente et attribue des tables aux groupes en fonction de leur score, budget et ancienneté."""
