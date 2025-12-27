@@ -131,7 +131,7 @@ while True :
             groupe_data.remove(meilleur_groupe)
     else:
         break
-
+#Jour 7 avec chatGPT
 #On par du principe que l'on gere que les groupe qui n'ont pas de table
 #et qui arrivent au fur et a mesure
 
@@ -139,17 +139,40 @@ wainting_for_new_group = [] #Wainting list for new groups
 def nouvelle_arrivee_groupes(wainting_for_new_group):
     """Gère l'arrivée de nouveaux groupes et leur attribution de table. si ne serait ce q'un groupe a été inscrit ca renvoi a True"""
     while (input("Ajouter un nouveau groupe ? (o/n) : ") == "o"):
-            nouveau_groupe = creer_groupe(wainting_for_new_group
+            nouveau_groupe = creer_groupe()
             if verifier_acces(nouveau_groupe):
                 nouveau_groupe["score"] = calculer_score(nouveau_groupe)
                 nouveau_groupe["anciennete"] = 0 # initialiser l'ancienneté
                 wainting_for_new_group.append(nouveau_groupe)
             else:
                 break
-                return True
     return False
 def departager_groupe(groupes):
-        groupeskey=lambda x: (x["anciennete"],x["score"]), reverse=True)
+    """Départage les groupes en cas d'égalité de score en utilisant l'ancienneté puis le score."""
+    if len(groupes) > 1:
+        max_anciennete = max(g["anciennete"] for g in groupes)
+        groupes_egaux = [g for g in groupes if g["anciennete"] == max_anciennete]
+        groupes_egaux_sorted = sorted(groupes_egaux, key=lambda x: x["score"], reverse=True)
+        if len(groupes_egaux) > 1:
+            groupes.remove(groupes_egaux_sorted[0])
+            return groupes_egaux_sorted[0]
+                
+        else:
+            groupes.remove(groupes_egaux_sorted[0])
+            return groupes_egaux[0]
+    else:
+            groupes.remove(groupes[0])
+            return groupes[0]
 
 def check_wainting_list(wainting_for_new_group):
     """Vérifie la liste d'attente et attribue des tables aux groupes en fonction de leur score, budget et ancienneté."""
+    while True :
+        nouvelle_arrivee_groupes(wainting_for_new_group)
+        if wainting_for_new_group:
+            print(departager_groupe(wainting_for_new_group))
+            if len(wainting_for_new_group) > 0:
+                for g in wainting_for_new_group:
+                    g["anciennete"] = g.get("anciennete", 0) + 1  # augmenter l'ancienneté de chaque groupe
+        else:
+            print("Pas de nouveaux groupes en attente.")
+            break

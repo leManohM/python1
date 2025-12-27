@@ -20,7 +20,7 @@ def caesar_cipher(text, shift):
     shifted_alphabet = alphabet[shift:] + alphabet[:shift] #the shifted alphabet
     translation_table = str.maketrans(alphabet, shifted_alphabet)#the translation table of the alphabet to the shifted alphabet
     return text.translate(translation_table) #return the translated text
-
+    # pour decrypter on utilise -shift qui revient a la translation inverse
 
 #Build an RPG character
 #freeciodecamp.org exercise solultion i made 
@@ -57,3 +57,5 @@ def create_character(name,strength,intelligence,charisma):
     if sum(stat) != 7 :
         return "The character should start with 7 points"
     return name+"\n"+"STR "+"●"*strength+"○"*(10- strength)+"\n"+"INT "+"●"*intelligence+"○"*(10- intelligence)+"\n"+"CHA " +"●"*charisma +"○"*(10- charisma)
+
+
